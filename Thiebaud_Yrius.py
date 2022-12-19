@@ -142,13 +142,38 @@ dfs = pan.DataFrame({'Grenoble Rocade Sud Oxyde d\'azote':grenobleAzote,
 #saveCovariance = dfi.export(dfs.cov(), 'covarianceMatrix.png')
 
 ### Question 10 ###
-def convertData(Data):
+def convertData(indiceCol):
     result = []
-    for i in range(0, len(Data)):
-        result.append(log(Data[i]))
+    dfs2 = dfs.reset_index()
+    for i in range(0, len(dfs2)):
+        print(log(float(dfs2.iloc[i, indiceCol])))
+        result.append(log(float(dfs2.iloc[i, indiceCol]))) 
     return result
 
-x = convertData(dfs['A7 Sud lyonnais Oxyde d\'azote'])
-y = convertData(dfs['Grenoble Rocade Sud Oxyde d\'azote'])
+x = convertData(1)
+y = convertData(5)
+
+cor = np.corrcoef(y, x)
 
 
+
+# Exo : 2
+
+### Question 1 ###
+
+U = st.uniform.rvs(0, 1, size=10000)
+S = (-np.log(U)*10)
+R = np.ceil(S)
+
+minS = []
+maxS = []
+
+### Question 2 ###
+
+### Question 3 ###
+
+### Question 4 ###
+
+### Question 5 ###
+
+### Question 6 ###
