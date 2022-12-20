@@ -1,4 +1,4 @@
-# coding:utf-8
+# # coding:utf-8
 
 # Import
 import numpy as np
@@ -7,23 +7,25 @@ import pandas as pan
 import dataframe_image as dfi
 import scipy.stats as st
 import statsmodels.api as sm
-from math import sqrt, log
 import scipy.stats.mstats as ms
 
 
 # Exo : 1
 
 # Chargement des donnees
+
 Air = pan.read_csv("http://tinyurl.com/y39an7ef/Data89965.csv", sep='\t', na_values='-')
 
-# Affichage de l'entetes
+
 ### Question 1 ###
+
 typeAir = Air.dtypes
 
 ### Question 2 ###
 
 
 # Fonction qui calcule le nombre de jour ou les PM10 ont ete messure a toutes les stations
+
 def sumDayPM10():
     nbDay = 0
     for i in range(0, 731):
@@ -32,7 +34,6 @@ def sumDayPM10():
     return nbDay
 
 ### Question 3 ###
-
 
 def checkPM():
     result = []
@@ -43,7 +44,6 @@ def checkPM():
             result.append(False)
     return result
 
-
 def checkAzote():
     result = []
     for i in range(0, 731):
@@ -53,20 +53,20 @@ def checkAzote():
             result.append(False)
     return result
 
-
 # les valeurs seront automatiquemt de type bool pas besoin de convertion
+
 Air = Air.assign(PMObs=checkPM())
 Air = Air.assign(AzoteObs=checkAzote())
 
 # Affiche la table de contingence de PMObs et AzoteObs
-table = pan.crosstab(Air['PMObs'], Air['AzoteObs'])
 
+table = pan.crosstab(Air['PMObs'], Air['AzoteObs'])
 
 ### Question 4 ###
 
 colPM10 = Air['A7 Sud lyonnais Particules PM10'].dropna()
-# fonction qui renvoie un tuples avec la moyenne les variances et le quartiles 25%
 
+# fonction qui renvoie un tuples avec la moyenne les variances et le quartiles 25%
 
 def infoData(data):
     moyData = np.mean(data)
@@ -79,7 +79,6 @@ def infoData(data):
 infoPM10 = infoData(colPM10)
 
 ### Question 5 ###
-
 
 def checkPM10(val):
     result = []
@@ -101,13 +100,19 @@ def interConf(data):
     return inter
 
 
-PseuilInfo2015 = interConf(Air['seuilInfo']) #intervalle de confiance exact a 0.95 pour seuilInfo
+PseuilInfo = interConf(Air['seuilInfo']) #intervalle de confiance exact a 0.95 pour seuilInfo
 
 seuilAlert = interConf(Air['seuilAlerte']) #intervalle de confiance exact a 0.95 pour seuilAlerte
 
 ### Question 7 ###
 
+testAlternative = st.ttest_1samp(Air['seuilInfo'], popmean=35/365, alternative='two-sided')
+print(testAlternative)
+
 ### Question 8 ###
+
+testSignificative = st.ttest_1samp(Air['seuilInfo'], popmean=35/365, alternative='greater')
+print(testSignificative)
 
 ### Question 9 ###
 
@@ -132,7 +137,8 @@ a7SudPM = ajoutAzotePM(11, 12)
 
 clermontAzote = ajoutAzotePM(13, 14)
 
-dfs = pan.DataFrame({'Grenoble Rocade Sud Oxyde d\'azote':grenobleAzote,
+dfs = pan.DataFrame({'Date':Air['Date'],
+                       'Grenoble Rocade Sud Oxyde d\'azote':grenobleAzote,
                        'Grenoble Rocade Sud PM':grenoblePM,
                        'A7 Nord-Isere Oxyde d\'azote': a7NordAzote,
                        'A7 Nord-Isere PM': a7NordPM,
@@ -144,31 +150,28 @@ dfs = pan.DataFrame({'Grenoble Rocade Sud Oxyde d\'azote':grenobleAzote,
 ### Question 10 ###
 def convertData(indiceCol):
     result = []
-    dfs2 = dfs.reset_index()
-    for i in range(0, len(dfs2)):
-        print(log(float(dfs2.iloc[i, indiceCol])))
-        result.append(log(float(dfs2.iloc[i, indiceCol]))) 
+    for i in range(0, len(dfs)):
+        result.append(np.log(float(dfs.iloc[i, indiceCol]))) 
     return result
 
-x = convertData(1)
-y = convertData(5)
+x = convertData(2)
+y = convertData(6)
 
-cor = np.corrcoef(y, x)
-
+cor = st.pearsonr(x, y)
 
 
 # Exo : 2
 
 ### Question 1 ###
 
-U = st.uniform.rvs(0, 1, size=10000)
-S = (-np.log(U)*10)
-R = np.ceil(S)
+# U = st.uniform.rvs(0, 1, size=10000)
+# S = (-np.log(U)*10)
+# R = np.ceil(S)
 
-minS = []
-maxS = []
 
 ### Question 2 ###
+
+
 
 ### Question 3 ###
 
