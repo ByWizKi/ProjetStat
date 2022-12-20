@@ -107,12 +107,12 @@ seuilAlert = interConf(Air['seuilAlerte']) #intervalle de confiance exact a 0.95
 ### Question 7 ###
 
 testAlternative = st.ttest_1samp(Air['seuilInfo'], popmean=35/365, alternative='two-sided')
-print(testAlternative)
+
 
 ### Question 8 ###
 
 testSignificative = st.ttest_1samp(Air['seuilInfo'], popmean=35/365, alternative='greater')
-print(testSignificative)
+
 
 ### Question 9 ###
 
@@ -164,16 +164,25 @@ cor = st.pearsonr(x, y)
 
 ### Question 1 ###
 
-# U = st.uniform.rvs(0, 1, size=10000)
-# S = (-np.log(U)*10)
-# R = np.ceil(S)
-
+U = st.uniform.rvs(0, 1, size=10000)
+S = (-np.log(U)*10)
+R = np.ceil(S)
+V=S[S>0]
+# plt.hist(V, density=True, color='red')
+# plt.xlabel("S positif")
+# plt.ylabel("Densite")
+# plt.show()
 
 ### Question 2 ###
 
 
 
 ### Question 3 ###
+
+def Q3():
+    plt.plot(R)
+    plt.show()
+Q3()
 
 ### Question 4 ###
 
